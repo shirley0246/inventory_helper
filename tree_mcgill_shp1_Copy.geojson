@@ -1,6 +1,6 @@
 {
 "type": "FeatureCollection",
-"name": "tree_mcgill_shp",
+"name": "tree_mcgill_shp1",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
 "features": [
 { "type": "Feature", "properties": { "id": 1, "layer": "LNAD-ARBRE", "no": "818", "espece": "ML", "nomsc": "Malus spp.", "nomcommun": "Pommetier", "nomanglais": "Crabapple" }, "geometry": { "type": "Point", "coordinates": [ -73.583014110672181, 45.51040219466956 ] } },
