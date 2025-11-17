@@ -390,7 +390,7 @@
         console.log("this is my coordinate", myCoord);
         for (i=0; i<treesNearMe.length; i++) {
             if (!treeToHTML.includes(treesNearMe[i])) {
-                treeToHTML += treesNearMe[i] + ", ";
+                treeToHTML += "<br>" + treesNearMe[i];
                 treeNum += 1};
         }
         console.log("number of tree species:", treeNum);
