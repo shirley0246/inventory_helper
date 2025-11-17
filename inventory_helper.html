@@ -2,11 +2,16 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Campus Trees</title>
+    <title>McGill Inventory Helper</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <link rel="icon" type="x-icon" href="maple_tree.jpg"> 
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.17.0-beta.1/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.17.0-beta.1/mapbox-gl.js"></script>
+    <!-- load proj4js from CDN -->
+    <!-- https://community.esri.com/t5/developers-blog/use-proj4js-alongside-the-arcgis-api-for/ba-p/892054 -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.3/proj4.js"></script>
+    <!-- then load the ArcGIS API for JavaScript-->
+    <script src="//js.arcgis.com/3.11/"></script>
     <!-- website icon found in this website: https://www.pngegg.com/en/search?q=paper+Map#google_vignette -->
     <style>
         body { 
@@ -82,63 +87,93 @@
             border-radius: 10px;
         }
 
-        /* add a menu for toggle*/
-         #menu {  
-        background: #F5E8E9; /*set the base color of toggle buttons when it's not active*/
-        position: absolute;
-        z-index: 5; /*position toggle above map*/
-        top: 170px; /* make sure that it is below the nav bar and title*/
-        right: 10px; /*distance to the right border*/
-        border-radius: 3px; /*make angle round*/
-        width: 120px;
-        border: 1px solid rgba(0, 0, 0, 0.4);
-        font-family: "courier", monospace; /*match the font to tracking page*/
+        
+        #displayTree {
+            display: grid;
+            grid-template-columns: 30% 68%;
+            column-gap: 15px;
+            margin-left:10px;
+        } 
+
+        #text {
+            grid-column: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding-left: 5%;
+            padding-right: 5%;
+            background: rgb(249, 187, 154);
+            border-radius: 10px;
         }
 
-    @media (min-width:320px) and (max-width:600px){
-        #menu {
-            top: 250px; /*one a phone, position toggle below title*/
+        button {
+            background:#f3d864;
+            width: 150px;
+            height: 30px;
+            font: 0.8rem "verdana", sans-serif;
+            border-radius: 7px;
+            border-color: #f0e8aa;
+            transition: background-color 0.3s ease;
+            margin: 3px;
+            margin-top: 8px;
         }
-    }
-
-        #menu a {
-            font-size: 13px; /*font size of names*/
-            color: #404040; /*color of words*/
-            display: block;
-            margin: 0;
-            padding: 0;
-            padding: 10px;
-            text-decoration: none;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.25);
-            text-align: center;
+        button:hover {
+            background-color:  #f9e5ba; /* Background color on hover */
         }
 
-        #menu a:last-child {
-            border: none;
+        #distTitle {
+            font: bold 1rem "verdana", sans-serif;
+            /*width: 500px; */
+            justify-self: left;
+            margin-top: 25px;
         }
 
-         #menu a:hover { /* make sure that when you hover it changes color for clarity */
-            background-color: #f8f8f8; /* hover background color when it's not active*/
-            color: #404040; /*color of words*/
+        #treesAround {
+            font: 0.8rem "verdana", sans-serif;
+            line-height: 25px;
         }
 
-        #menu a.active { /* new color for when it is toggled on */
-            background-color: #F8798D; /*background when it's active*/
-            color: #ffffff;
-        }
 
-        #menu a.active:hover { /* new color for toggled on and hovered on */
-            background: #F894A3; /*hover background when it's active*/
-            color: #ffffff;
-        }
         #map { 
-            width: 95%; /*width of the map takes up 95% of the page*/
+            width: 100%; /*width of the map takes up 95% of the page*/
             height: 730px; /*set the height of the page to a reasonable value*/
-            align-self: center; /*center the map*/
-            border-radius: 5px; /*make the border angle round*/
+            justify-self: center; /*center the map*/
+            border-radius: 10px; /*make the border angle round*/
             position: relative; /*relative position to apply z-index*/
             z-index: 1; /*Move the map behind toggle bars*/
+            grid-column: 2;
         } 
+
+        @media (min-width:320px) and (max-width:650px){
+        #title {
+            /*font: small-caps bold 1.8rem "verdana", sans-serif; /*set a font*/
+            font: bold 1.3rem "verdana", sans-serif;
+            padding: 10px; /*add padding and margin for aesthetics*/
+            margin: 7px;
+        }
+        #displayTree {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-left:10px;
+        } 
+        #text {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding-left: 2%;
+            padding-right: 2%;
+            margin-right: 2%;
+            margin-bottom: 2%;
+        }
+
+        #map { 
+            width: 95%; /*width of the map takes up 95% of the page*/
+            height: 500px; /*set the height of the page to a reasonable value*/
+            padding-left:3%;
+        } 
+        
+    }
 
     </style>
 </head>
@@ -152,24 +187,25 @@
         </ul>
     </nav>
     <h1 id="title">Tree Inventory Helper</h1>
-    <h1>Enter your requirement</h1>
-    <input id="input" type="text" placeholder="Text">
-    <button onclick="storeInput()">Submit</button>
-    <div id="map"></div>
+    <div id="displayTree">
+        <div id="text">
+            <button id = "locationBtn" onclick = "getLocation()"> Get my location</button>
+            <h1 id="distTitle">Trees within 10 meters to you</h1>
+            <p id="treesAround"></p>
+        </div>
+        <div id="map"></div>
+    </div>
+    
 <script>
-    var userInput = document.getElementById("input").value;
-    function storeInput() {
-        var userInput = document.getElementById("input").value;
-        console.log(userInput);
-    }
+    //document.getElementById("treesAround").innerHTML = "hello";
 
-    mapboxgl.accessToken = 'pk.eyJ1Ijoic2x5dzAyNDYiLCJhIjoiY20wdjhvNGtvMWg1ZTJpcTVuc3E0NXp5YyJ9.WMIP4DPHgpFwrqKGTEf0FA'
+    mapboxgl.accessToken = 'pk.eyJ1Ijoic2x5dzAyNDYiLCJhIjoiY20wdjhvNGtvMWg1ZTJpcTVuc3E0NXp5YyJ9.WMIP4DPHgpFwrqKGTEf0FA';
 
     const map = new mapboxgl.Map({
         container: 'map', // container ID
         style: 'mapbox://styles/slyw0246/cm1l31w4s006z01pdetjp1gjt', // set style for the map mapbox://styles/mapbox/streets-v12 (older style)
-        center: [-73.57598, 45.50411], // starting position [lng, lat]. Note that lat must be set between -90 and 90
-        zoom: 15 // starting zoom
+        center: [-73.5782611, 45.5065694], // starting position [lng, lat]. Note that lat must be set between -90 and 90
+        zoom: 14.9 // starting zoom
     }); 
 
     map.on('load', function() { 
@@ -190,7 +226,7 @@
             // add color and width to the line
             paint: {
                 'circle-radius': 5, // make the line more visible
-                'circle-color': 'pink', 
+                'circle-color': '#117a23', 
                 //'line-opacity': 0.4 // opacity for dash line animation
             } // from mapbox website code about loading geojson in mapbox
         });}
@@ -200,7 +236,7 @@
     map.on('click', 'trees', (e) => {
         new mapboxgl.Popup() // call a built in function mapboxgl.Popup()
             .setLngLat(e.features[0].geometry.coordinates.slice()) // get the coordinate of e
-            .setHTML(e.features[0].properties.nomsc) // set the HTML of the popup as the description in geoJSON of the layer
+            .setHTML(e.features[0].properties.nomsc + " (" + e.features[0].properties.nomanglais + ")") // set the HTML of the popup as the description in geoJSON of the layer
             .addTo(map); // add the popup to map
     });
 
@@ -212,6 +248,220 @@
     map.on('mouseleave', 'trees', () => {
         map.getCanvas().style.cursor = ''; // built in function to change the cursor back to normal
     });
+
+    map.addControl(
+        new mapboxgl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            // When active the map will receive updates to the device's location as it changes.
+            trackUserLocation: true,
+            // Draw an arrow next to the location dot to indicate which direction the device is heading.
+            showUserHeading: true
+        })
+    );
+
+    //var firstProj = "+proj=longlat +datum=WGS84 +no_defs";
+    // https://community.esri.com/t5/developers-blog/use-proj4js-alongside-the-arcgis-api-for/ba-p/892054
+    var toProj = "+proj=utm +zone=18 +datum=WGS84 +units=m +no_defs";
+    //var tryProj = 'PROJCS["NAD83 / Massachusetts Mainland",GEOGCS["NAD83",DATUM["North_American_Datum_1983",SPHEROID["GRS 1980",6378137,298.257222101,AUTHORITY["EPSG","7019"]],AUTHORITY["EPSG","6269"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.01745329251994328,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4269"]],UNIT["metre",1,AUTHORITY["EPSG","9001"]],PROJECTION["Lambert_Conformal_Conic_2SP"],PARAMETER["standard_parallel_1",42.68333333333333],PARAMETER["standard_parallel_2",41.71666666666667],PARAMETER["latitude_of_origin",41],PARAMETER["central_meridian",-71.5],PARAMETER["false_easting",200000],PARAMETER["false_northing",750000],AUTHORITY["EPSG","26986"],AXIS["X",EAST],AXIS["Y",NORTH]]';
+    var reprojectedCoords = proj4(toProj, [-73.583085206269843, 45.510551749860447]);
+    console.log(reprojectedCoords);
+
+    // loop through all points, if the point is within 5 meters of the location, add nomsc to the innerHTML
+
+    //var allTreePts = {}; // create an object for all trees containing the coordinates and species name
+    //var allCoords = [];
+
+    let tryJson;
+    let allJsonPts = { // crreate a geojson feature
+        "type": "FeatureCollection",
+        "features": []
+    };
+    fetch("tree_mcgill_shp1_Copy.geojson")
+        .then(response => response.json())
+        .then(data => {
+            tryJson = data;
+            console.log("This are tree points Json features", tryJson.features);
+        
+            for (i=0; i<tryJson.features.length; i++) { // 1618 is the feature length
+                tryJson.features[i].properties.lat= tryJson.features[i].geometry.coordinates[1];
+                tryJson.features[i].properties.lon= tryJson.features[i].geometry.coordinates[0];
+                tryJson.features[i].properties.sceng = tryJson.features[i].properties.nomsc + " (" + tryJson.features[i].properties.nomanglais + ")";
+                }
+                
+            console.log("This are tree points Json", tryJson)
+            //allTreePts.species = 
+
+            for (i=0; i<tryJson.features.length; i++) {
+                allJsonPts.features.push(tryJson.features[i]);
+            }
+
+
+
+    /*
+    function convertDegToM(lat1, lat2, lon1, lon2) { // from stackoverflow
+        //https://stackoverflow.com/questions/4102520/how-to-transform-a-distance-from-degrees-to-metres 
+        var R = 6371;
+        if (typeof(Number.prototype.toRad) === "undefined") {
+            Number.prototype.toRad = function () {
+                return this * Math.PI / 180;
+            }
+        }
+        var dLat = (lat2 - lat1).toRad();
+        var dLon = (lon2 - lon1).toRad();
+        var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) * 
+            Math.sin(dLon/2) * Math.sin(dLon/2); 
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+        var d = R*c;
+        return d;
+    }*/
+
+
+    //var utmOnj = require('utm-latlng');
+    //https://www.pythontutorials.net/blog/how-to-convert-from-utm-to-latlng-in-python-or-javascript/
+
+    
+
+
+    //utm.convertLatLngToUtm(44.062027, 143.5279742, 1)
+
+    // console.log(utm.convertLatLngToUtm(44.062027, 143.5279742, 1));
+
+    //console.log("the distance is:", tryDist);
+
+
+
+
+
+    }) // end of fetch
+
+    console.log("these are extracted points", allJsonPts)
+
+    let ptsWithin5m = { // crreate a geojson feature
+        "type": "FeatureCollection",
+        "features": []
+    };
+    
+    let speciesWithin5m = [];
+    function within5m(userCoords) { // input a list of two elements (lon and lat)
+        var userUTM = proj4(toProj, userCoords);
+        for (i=0; i<allJsonPts.features.length; i++) {
+            var pointUTM = proj4(toProj, allJsonPts.features[i].geometry.coordinates);
+            let dist = Math.sqrt((pointUTM[0]-userUTM[0])**2 + (pointUTM[1]-userUTM[1])**2);
+            if (i==5) {console.log("see distance", dist)};
+            if (dist <= 50) {
+                ptsWithin5m.features.push(allJsonPts.features[i]); // feature to geojson
+                speciesWithin5m.push(allJsonPts.features[i].properties.sceng); // species to list
+                //console.log(allJsonPts.features[i])
+            }
+        }  
+        console.log(ptsWithin5m);
+        return speciesWithin5m;
+    }
+        
+    //let myCoords = [-73.5807137, 45.5113170];
+    // get user coordinates
+
+    // add event listener for button click
+    var x = document.getElementById("locationBtn");
+    x.addEventListener("click", getTrees(myCoord))
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else { 
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+    var myCoord = [];
+    var treesNearMe;
+    var treeNum = 0;
+    var treeToHTML = "";
+    function showPosition(position) { // not run before button click
+        myCoord.push(position.coords.longitude);
+        myCoord.push(position.coords.latitude);
+        alert("you location is latitude: " + myCoord[1] + ", longitude: " + myCoord[0])
+        console.log("this is my coordinate", myCoord);
+
+        treesNearMe = within5m(myCoord);
+        console.log("these trees are near me: ", treesNearMe);
+        console.log("this is my coordinate", myCoord);
+        for (i=0; i<treesNearMe.length; i++) {
+            if (!treeToHTML.includes(treesNearMe[i])) {
+                treeToHTML += treesNearMe[i] + ", ";
+                treeNum += 1};
+        }
+        console.log("number of tree species:", treeNum);
+        if (treesNearMe.length==0) {
+            document.getElementById("treesAround").innerHTML = "There is no tree near you";
+        } else(
+            document.getElementById("treesAround").innerHTML = "There are " + treeNum + " tree species near you. They are: " + treeToHTML);
+    }
+
+    document.getElementById("treesAround").innerHTML = "Click on the \"Get my location\" button to see the tree species near you.";
+    
+
+    //var treesNearMe;
+    //var treeToHTML = "The tree speceis around you are:";
+    function getTrees(coords) {
+        treesNearMe = within5m(coords);
+        console.log("these trees are near me", treesNearMe);
+        console.log("this is my coordinate", coords);
+        for (i=0; i<treesNearMe.length; i++) {
+            if (!treeToHTML.includes(treesNearMe[i])) {
+                treeToHTML += treesNearMe[i] + ", "};
+        }
+        document.getElementById("treesAround").innerHTML = treeToHTML;
+
+    }
+    console.log("this is my coordinate", myCoord);
+    //ptsNearMe = within5m(myCoord);
+    //console.log("these trees are near me", ptsNearMe)
+    //console.log("this is my coordinate", myCoord)
+
+
+    /*
+    for (i=0; i<ptsNearMe.length; i++) {
+        if (!treeToHTML.includes(ptsNearMe[i])) {
+            treeToHTML += ptsNearMe[i] + ", "};
+    }
+    document.getElementById("treesAround").innerHTML = treeToHTML;*/
+
+
+
+        
+    // try calculate distance
+    var tryUTM1 = proj4(toProj, [-73.5770057, 45.5030949]);
+    var tryUTM2 = proj4(toProj, [-73.5761314, 45.5039374]);
+    console.log(tryUTM1);
+    console.log(tryUTM2);
+    console.log((tryUTM1[0]-tryUTM2[0])**2);
+    console.log(tryUTM1[1]-tryUTM2[1]);
+    console.log(Math.sqrt((tryUTM1[0]-tryUTM2[0])**2 + (tryUTM1[1]-tryUTM2[1])**2));
+
+
+    /*
+    let ptsWithin5m = { // crreate a geojson feature
+        "type": "FeatureCollection",
+        "features": []
+    };
+
+    function within5m(userCoords) { // input a list of two elements (lon and lat)
+        for (i=0; i<tryJson.features.length; i++) {
+            let dist = sqrt((tryJson.features[i].geometry.coordinates[0]-userCoords[0])^2 +
+                    (tryJson.features[i].geometry.coordinates[1]-userCoords[1])^2);
+            if (dist <= 5) {
+                ptsWithin5m.features.push(tryJsonfeature[i])
+            }
+        }  
+    }*/
+
+    //tryJson.features.properties.lat = tryJson.features.geometry.coordinates;
+    //console.log(tryJson.features.properties.lat)
+    //console.log("hello")
+
 
 </script>
 </body>
