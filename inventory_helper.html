@@ -343,7 +343,7 @@
 
     console.log("these are extracted points", allJsonPts)
 
-    let ptsWithin5m = { // crreate a geojson feature
+    let ptsWithin5m = { // create a geojson feature
         "type": "FeatureCollection",
         "features": []
     };
@@ -372,7 +372,7 @@
 
     // add event listener for button click
     var x = document.getElementById("locationBtn");
-    x.addEventListener("click", getTrees(myCoord))
+    //x.addEventListener("click", getTrees(myCoord))
 
     function getLocation() {
         if (navigator.geolocation) {
@@ -403,8 +403,9 @@
         if (treesNearMe.length==0) {
             document.getElementById("treesAround").innerHTML = "There is no tree near you";
         } else(
-            document.getElementById("treesAround").innerHTML = "There are " + treeNum + " tree species near you. They are: " + treeToHTML);
-    }
+            document.getElementById("treesAround").innerHTML = "There are " + treesNearMe.length + " trees and " + treeNum + " species near you. They are: " + treeToHTML);
+        myCoord = [];
+        }
 
     document.getElementById("treesAround").innerHTML = "Click on the \"Get my location\" button to see the tree species near you.";
     
