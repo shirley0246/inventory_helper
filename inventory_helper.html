@@ -102,7 +102,7 @@
             justify-content: flex-start;
             padding-left: 5%;
             padding-right: 5%;
-            background: rgb(249, 187, 154);
+            background: rgb(222, 234, 158);
             border-radius: 10px;
         }
 
@@ -194,7 +194,7 @@
     <div id="displayTree">
         <div id="text">
             <button id = "locationBtn" onclick = "getLocation()"> Get my location</button>
-            <h1 id="distTitle">Trees within 10 meters to you</h1>
+            <h1 id="distTitle"></h1>
             <p id="treesAround"></p>
         </div>
         <div id="map"></div>
@@ -349,13 +349,15 @@
     };
     
     let speciesWithin5m = [];
+    let distM = 20;
+    document.getElementById("distTitle").innerHTML = "Trees within " + distM + " meters to you";
     function within5m(userCoords) { // input a list of two elements (lon and lat)
         var userUTM = proj4(toProj, userCoords);
         for (i=0; i<allJsonPts.features.length; i++) {
             var pointUTM = proj4(toProj, allJsonPts.features[i].geometry.coordinates);
             let dist = Math.sqrt((pointUTM[0]-userUTM[0])**2 + (pointUTM[1]-userUTM[1])**2);
             if (i==5) {console.log("see distance", dist)};
-            if (dist <= 50) {
+            if (dist <= distM) {
                 ptsWithin5m.features.push(allJsonPts.features[i]); // feature to geojson
                 speciesWithin5m.push(allJsonPts.features[i].properties.sceng); // species to list
                 //console.log(allJsonPts.features[i])
