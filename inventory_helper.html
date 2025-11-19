@@ -42,6 +42,11 @@
             margin-left: 20px;
         }
 
+        .navbar h1 a{
+            text-decoration: none;
+            color: black;
+        }
+
         .nav-links {
             list-style: none; /* Remove bullet points */
             margin: 0; /* Remove default margin */
@@ -155,6 +160,34 @@
             padding: 10px; /*add padding and margin for aesthetics*/
             margin: 7px;
         }
+
+        .navbar{
+            justify-content: space-between;
+            gap: 50px;
+            padding-right: 30px;
+            padding: 5px 20px;
+        }
+
+        .nav-links {
+            gap: 5px; /* Add space between buttons */
+            flex-direction: column;
+            align-items: left;
+        }
+
+        .nav-links a {
+            color: black; /* Link color */
+            text-decoration: none; /* Remove underline */
+            font-size: 0.7rem; /* Font size for links */
+            padding: 3px; /* Increase padding for bigger clickable area */
+            background-color: #eaf4cf; /* Background color for links */
+            /*border: 2px solid #4e5965; /* Border color and thickness for the frame */
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s ease; /* Smooth hover effect */
+            display: inline-block; /* Ensure padding applies evenly around text */
+            width: 120px;
+            text-align: center;
+        }
+
         #displayTree {
             display: flex;
             flex-direction: column;
@@ -183,11 +216,11 @@
 </head>
 <body>
     <nav class="navbar">
-        <h1>McGill Tree Guide </h1>
+        <h1><a href="">McGill Tree Guide</a></h1>
         <ul class="nav-links">
-            <li><a href="">Species List</a></li>
-            <li><a href="">Soil Collection</a></li>
-            <li><a href="">Historical Ecology</a></li>
+            <li><a href="https://slyw0246.github.io/inventory_helper/inventory_helper.html">Inventory Helper</a></li>
+            <li><a href="https://samisugiarta.shinyapps.io/tree_app/">Decision Tree</a></li>
+            <li><a href="">Third link</a></li>
         </ul>
     </nav>
     <h1 id="title">Tree Inventory Helper</h1>
