@@ -15,30 +15,30 @@
     <!-- website icon found in this website: https://www.pngegg.com/en/search?q=paper+Map#google_vignette -->
     <style>
         body { 
-            margin: 0; /*no space around div*/
-            padding: 0; /*no space inside div*/
-            display: flex; /*flexbox for organizing the webiste*/
-            flex-direction: column; /*column direction flex*/
-            background-color: #FEF9F2; /*background color of the website*/
+            margin: 0; 
+            padding: 0; 
+            display: flex; 
+            flex-direction: column; 
+            background-color: #FEF9F2; 
         }
         
         .navbar {
-            background-color: #b6d898; /* Background color for navbar */
+            background-color: #b6d898; 
             overflow: hidden;
-            display: flex; /* Use flexbox for layout */
+            display: flex;
             padding-left: 10px;
-            align-items: center; /* Vertically center items */
-            justify-content: space-between; /* align everythingt to the left*/
-            padding: 10px 20px; /* Add padding for aesthetics */
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 10px 20px; 
             padding-right: 70px;
-            font: 0.8rem "verdana", sans-serif; /* Font settings */
-            gap: 20px; /* Add some space between the header and the buttons */
+            font: 0.8rem "verdana", sans-serif; 
+            gap: 20px; 
         }
 
         .navbar h1 {
-            font-size: 1.2rem; /* Larger font for header */
-            color: black; /* Text color for header */
-            margin: 0; /* Remove default margin */
+            font-size: 1.2rem; 
+            color: black; 
+            margin: 0; 
             margin-left: 20px;
         }
 
@@ -48,46 +48,44 @@
         }
 
         .nav-links {
-            list-style: none; /* Remove bullet points */
-            margin: 0; /* Remove default margin */
-            padding: 0; /* Remove default padding */
-            display: flex; /* Use flexbox for horizontal layout */
-            align-items: center; /* Vertically center the buttons */
-            gap: 20px; /* Add space between buttons */
+            list-style: none; 
+            margin: 0; 
+            padding: 0;
+            display: flex; 
+            align-items: center; 
+            gap: 20px; 
         }
 
         .nav-links li {
-            padding-top: 0; /* Remove padding to vertically center in the nav bar */
+            padding-top: 0; 
         }
 
         .nav-links a {
-            color: black; /* Link color */
-            text-decoration: none; /* Remove underline */
-            font-size: 0.8rem; /* Font size for links */
-            padding: 10px 15px; /* Increase padding for bigger clickable area */
-            background-color: #eaf4cf; /* Background color for links */
-            /*border: 2px solid #4e5965; /* Border color and thickness for the frame */
-            border-radius: 5px; /* Rounded corners */
-            transition: background-color 0.3s ease; /* Smooth hover effect */
-            display: inline-block; /* Ensure padding applies evenly around text */
+            color: black; 
+            text-decoration: none; 
+            font-size: 0.8rem; 
+            padding: 10px 15px; 
+            background-color: #eaf4cf; 
+            /*border: 2px solid #4e5965;  */
+            border-radius: 5px; 
+            transition: background-color 0.3s ease;
+            display: inline-block; 
             width: 120px;
             text-align: center;
         }
 
         .nav-links a:hover {
-            background-color:  #ffffe9; /* Background color on hover */
+            background-color:  #ffffe9; 
         }
-
-        /* New styles for responsiveness */
         
         
 
         #title {
-            /*font: small-caps bold 1.8rem "verdana", sans-serif; /*set a font*/
+            /*font: small-caps bold 1.8rem "verdana", sans-serif; */
             font: bold 1.7rem "verdana", sans-serif;
-            text-align: center; /*center the title for aesthetics*/
-            background-color: #f0eeb3; /*background color of title box*/
-            padding: 20px; /*add padding and margin for aesthetics*/
+            text-align: center; 
+            background-color: #f0eeb3; 
+            padding: 20px; 
             margin: 10px;
             border-radius: 10px;
         }
@@ -124,7 +122,7 @@
             margin-top: 8px;
         }
         button:hover {
-            background-color:  #f9e5ba; /* Background color on hover */
+            background-color:  #f9e5ba; 
         }
 
         #distTitle {
@@ -141,12 +139,12 @@
 
 
         #map { 
-            width: 100%; /*width of the map takes up 95% of the page*/
-            height: 730px; /*set the height of the page to a reasonable value*/
-            justify-self: center; /*center the map*/
-            border-radius: 10px; /*make the border angle round*/
-            position: relative; /*relative position to apply z-index*/
-            z-index: 1; /*Move the map behind toggle bars*/
+            width: 100%; 
+            height: 730px; 
+            justify-self: center; 
+            border-radius: 10px; 
+            position: relative; 
+            z-index: 1; 
             grid-column: 2;
         } 
 
@@ -156,9 +154,9 @@
 
         @media (min-width:320px) and (max-width:650px){
         #title {
-            /*font: small-caps bold 1.8rem "verdana", sans-serif; /*set a font*/
+            /*font: small-caps bold 1.8rem "verdana", sans-serif; */
             font: bold 1.3rem "verdana", sans-serif;
-            padding: 10px; /*add padding and margin for aesthetics*/
+            padding: 10px; 
             margin: 7px;
         }
 
@@ -170,21 +168,21 @@
         }
 
         .nav-links {
-            gap: 5px; /* Add space between buttons */
+            gap: 5px; 
             flex-direction: column;
             align-items: left;
         }
 
         .nav-links a {
-            color: black; /* Link color */
-            text-decoration: none; /* Remove underline */
-            font-size: 0.7rem; /* Font size for links */
-            padding: 3px; /* Increase padding for bigger clickable area */
-            background-color: #eaf4cf; /* Background color for links */
-            /*border: 2px solid #4e5965; /* Border color and thickness for the frame */
-            border-radius: 5px; /* Rounded corners */
-            transition: background-color 0.3s ease; /* Smooth hover effect */
-            display: inline-block; /* Ensure padding applies evenly around text */
+            color: black; 
+            text-decoration: none; 
+            font-size: 0.7rem; 
+            padding: 3px; 
+            background-color: #eaf4cf; 
+            /*border: 2px solid #4e5965; */
+            border-radius: 5px; 
+            transition: background-color 0.3s ease;
+            display: inline-block; 
             width: 120px;
             text-align: center;
         }
@@ -206,8 +204,8 @@
         }
 
         #map { 
-            width: 95%; /*width of the map takes up 95% of the page*/
-            height: 500px; /*set the height of the page to a reasonable value*/
+            width: 95%; 
+            height: 500px; 
             padding-left:3%;
         } 
         
@@ -221,7 +219,7 @@
         <ul class="nav-links">
             <li><a href="https://shirley0246.github.io/inventory_helper/inventory_helper.html">Inventory Helper</a></li>
             <li><a href="https://samisugiarta.shinyapps.io/tree_app/">Decision Tree</a></li>
-            <li><a href="">Third link</a></li>
+            <li><a href="https://mcgilltrees.github.io/dichotomous-key/">Dichotomous Key</a></li>
         </ul>
     </nav>
     <h1 id="title">Tree Inventory Helper</h1>
@@ -247,46 +245,39 @@
     }); 
 
     map.on('load', function() { 
-        //the url (name) of the .json file - must be in same folder as the 
-        //add a source 
         map.addSource('McgillTrees', { 
             type: 'geojson', 
             data: 'tree_mcgill_shp1.geojson'}); 
-        // add map layer using 'ShirleyData' as source
         map.addLayer({ 
-            id: "trees", // create id for later use in animation, toggle, and popup functions
+            id: "trees", 
             type: "circle", 
             source: "McgillTrees",
             layout: {
-                // Make the layer visible by default.
                 'visibility': 'visible'
             },
-            // add color and width to the line
             paint: {
-                'circle-radius': 5, // make the line more visible
-                'circle-color': '#117a23', 
-                //'line-opacity': 0.4 // opacity for dash line animation
-            } // from mapbox website code about loading geojson in mapbox
+                'circle-radius': 5, 
+                'circle-color': '#117a23'
+            } 
         });}
-        // add map layer for dash line animation
     )
 
     map.on('click', 'trees', (e) => {
-        new mapboxgl.Popup() // call a built in function mapboxgl.Popup()
-            .setLngLat(e.features[0].geometry.coordinates.slice()) // get the coordinate of e
-            .setHTML(e.features[0].properties.nomsc + " (" + e.features[0].properties.nomanglais + ")") // set the HTML of the popup as the description in geoJSON of the layer
-            .addTo(map); // add the popup to map
+        new mapboxgl.Popup() 
+            .setLngLat(e.features[0].geometry.coordinates.slice()) 
+            .setHTML(e.features[0].properties.nomsc + " (" + e.features[0].properties.nomanglais + ")") 
+            .addTo(map);
     });
 
     map.on('mouseenter', 'trees', () => {
-        map.getCanvas().style.cursor = 'pointer'; // built in function to change the cursor to a pointer
+        map.getCanvas().style.cursor = 'pointer'; 
     });
 
-    // Change it back to a normal curosr when it leaves the feature
     map.on('mouseleave', 'trees', () => {
-        map.getCanvas().style.cursor = ''; // built in function to change the cursor back to normal
+        map.getCanvas().style.cursor = ''; 
     });
 
+    // https://docs.mapbox.com/mapbox-gl-js/example/locate-user/
     map.addControl(
         new mapboxgl.GeolocateControl({
             positionOptions: {
